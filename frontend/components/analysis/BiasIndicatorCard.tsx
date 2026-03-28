@@ -5,7 +5,11 @@ export function BiasIndicatorCard({ data }: { data: CompanyAnalysis }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 ring-1 ring-white/5">
       <h2 className="text-sm font-semibold text-white">Media & political bias</h2>
-      <p className="mt-1 text-xs text-zinc-500">Heuristic overlay on coverage (mock).</p>
+      <p className="mt-1 text-xs text-zinc-500">
+        {data.dataSource === "live"
+          ? "Heuristic source-diversity signal from the live article set."
+          : "Heuristic overlay (demo when API is offline)."}
+      </p>
       <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center">
         <div className="flex h-20 w-full max-w-[200px] flex-col justify-center rounded-xl border border-white/10 bg-black/30 px-4">
           <p className="text-xs uppercase tracking-wider text-zinc-500">Polarization index</p>

@@ -13,21 +13,47 @@ const toneLabel: Record<SentimentTone, string> = {
 };
 
 export function HeadlinesList({ data }: { data: CompanyAnalysis }) {
+  const live = data.dataSource === "live";
   return (
-    <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 ring-1 ring-white/5">
-      <h2 className="text-sm font-semibold text-white">Supporting headlines</h2>
-      <p className="mt-1 text-xs text-zinc-500">Recent items shaping the narrative (mock).</p>
-      <ul className="mt-4 divide-y divide-white/10">
+    <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-zinc-900/70 to-zinc-950/80 p-6 ring-1 ring-emerald-500/10 sm:p-8">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-widest text-emerald-400/90">News feed</p>
+          <h2 className="mt-1 text-xl font-semibold tracking-tight text-white sm:text-2xl">
+            Headlines driving the story
+          </h2>
+        </div>
+        <p className="max-w-md text-sm leading-relaxed text-zinc-400">
+          {live
+            ? "Fresh articles pulled for this ticker—this is the pulse judges notice first."
+            : "Demo headlines; connect the API to load live articles for any supported company."}
+        </p>
+      </div>
+      <ul className="mt-6 divide-y divide-white/10">
         {data.headlines.map((h) => (
-          <li key={h.id} className="flex flex-col gap-2 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p className="text-sm font-medium leading-snug text-zinc-100">{h.title}</p>
-              <p className="mt-1 text-xs text-zinc-500">
+          <li
+            key={h.id}
+            className="flex flex-col gap-3 py-5 first:pt-2 last:pb-0 sm:flex-row sm:items-start sm:justify-between sm:gap-6 sm:py-6"
+          >
+            <div className="min-w-0 flex-1">
+              {h.url ? (
+                <a
+                  href={h.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-base font-medium leading-snug text-white underline decoration-white/20 underline-offset-4 transition hover:decoration-emerald-400/80 sm:text-lg"
+                >
+                  {h.title}
+                </a>
+              ) : (
+                <p className="text-base font-medium leading-snug text-zinc-100 sm:text-lg">{h.title}</p>
+              )}
+              <p className="mt-2 text-sm text-zinc-500">
                 {h.source} · {h.relativeTime}
               </p>
             </div>
             <span
-              className={`inline-flex w-fit shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ${toneClass[h.tone]}`}
+              className={`inline-flex w-fit shrink-0 self-start rounded-full px-3 py-1 text-xs font-medium ring-1 sm:text-sm ${toneClass[h.tone]}`}
             >
               {toneLabel[h.tone]}
             </span>

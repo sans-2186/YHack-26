@@ -15,6 +15,7 @@ export interface Headline {
   source: string;
   relativeTime: string;
   tone: SentimentTone;
+  url?: string;
 }
 
 export interface TrendPoint {
@@ -51,4 +52,8 @@ export interface CompanyAnalysis {
   };
   headlines: Headline[];
   trend: TrendPoint[];
+  /** Set when this profile was loaded from POST /analyze (enables live chat). */
+  analysisId?: string;
+  dataSource?: "live" | "mock";
+  apiMeta?: { cached: boolean; latencyMs: number; sources: string[] };
 }

@@ -24,7 +24,11 @@ export function FinancialSummaryCards({ data }: { data: CompanyAnalysis }) {
   return (
     <div>
       <h2 className="text-sm font-semibold text-white">Financial snapshot</h2>
-      <p className="mt-1 text-xs text-zinc-500">Mock fundamentals for demo—replace with live feeds later.</p>
+      <p className="mt-1 text-xs text-zinc-500">
+        {data.dataSource === "live"
+          ? "Figures from the live fundamentals payload (provider varies by backend config)."
+          : "Demo fundamentals when the API is offline."}
+      </p>
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {data.financials.map((m) => (
           <div

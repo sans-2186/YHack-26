@@ -1,14 +1,5 @@
 import type { CompanyAnalysis } from "@/types";
-
-const trendBase = (offset: number): CompanyAnalysis["trend"] => [
-  { label: "Mon", sentiment: 42 + offset, perceptionRisk: 38, event: "Earnings preview" },
-  { label: "Tue", sentiment: 48 + offset, perceptionRisk: 41 },
-  { label: "Wed", sentiment: 55 + offset, perceptionRisk: 44, event: "Analyst downgrade" },
-  { label: "Thu", sentiment: 51 + offset, perceptionRisk: 52 },
-  { label: "Fri", sentiment: 58 + offset, perceptionRisk: 49, event: "Sector rally" },
-  { label: "Sat", sentiment: 61 + offset, perceptionRisk: 47 },
-  { label: "Sun", sentiment: 64 + offset, perceptionRisk: 45 },
-];
+import { trendBase } from "./trendFromScore";
 
 export const MOCK_COMPANIES: Record<string, CompanyAnalysis> = {
   AAPL: {

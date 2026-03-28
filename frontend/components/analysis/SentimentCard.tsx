@@ -5,7 +5,11 @@ export function SentimentCard({ data }: { data: CompanyAnalysis }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 ring-1 ring-white/5">
       <h2 className="text-sm font-semibold text-white">Sentiment</h2>
-      <p className="mt-1 text-xs text-zinc-500">Blended news & social tone (mock).</p>
+      <p className="mt-1 text-xs text-zinc-500">
+        {data.dataSource === "live"
+          ? "Blended from headlines in the live news bundle."
+          : "Blended news tone (demo when API is offline)."}
+      </p>
       <div className="mt-4 flex items-end gap-4">
         <div>
           <p className="text-4xl font-semibold tabular-nums text-white">{score}</p>

@@ -3,10 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-function normalizeTicker(raw: string) {
-  return raw.trim().toUpperCase().replace(/[^A-Z0-9.]/g, "") || "AAPL";
-}
-
 export function CompanySearch() {
   const router = useRouter();
   const [value, setValue] = useState("");
@@ -16,8 +12,9 @@ export function CompanySearch() {
       className="flex flex-col gap-3 sm:flex-row sm:items-stretch"
       onSubmit={(e) => {
         e.preventDefault();
-        const t = normalizeTicker(value);
-        router.push(`/analysis/${encodeURIComponent(t)}`);
+        const raw = value.trim();
+        if (!raw) return;
+        router.push(`/analysis/${encodeURIComponent(raw)}`);
       }}
     >
       <label htmlFor="company-search" className="sr-only">
@@ -27,7 +24,7 @@ export function CompanySearch() {
         id="company-search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Try AAPL, TSLA, or a company name…"
+        placeholder="Try AAPL, TSLA, apple, microsoft…"
         className="min-h-12 flex-1 rounded-xl border border-white/10 bg-zinc-900/80 px-4 text-sm text-white placeholder:text-zinc-600 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
       />
       <button

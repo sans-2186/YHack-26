@@ -10,16 +10,31 @@ import { TrendsChart } from "@/components/analysis/TrendsChart";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { PageContainer } from "@/components/layout/PageContainer";
-import { getMockAnalysis } from "@/lib/mockData";
+import { loadAnalysis } from "@/lib/loadAnalysis";
 
 type Props = { params: Promise<{ ticker: string }> };
 
 export default async function AnalysisPage({ params }: Props) {
   const { ticker: raw } = await params;
-  const ticker = decodeURIComponent(raw);
-  const data = getMockAnalysis(ticker);
-  const requested = ticker.toUpperCase().replace(/[^A-Z0-9.]/g, "");
-  const isFallback = requested.length > 0 && requested !== data.ticker;
+  const query = decodeURIComponent(raw);
+  const { data, status, detail, httpStatus } = await loadAnalysis(query);
+
+  const banner =
+    status === "live" ? (
+      <p className="rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-100">
+        Live analysis
+        {data.apiMeta?.cached ? " · served from cache" : ""}
+        {data.apiMeta?.sources?.length ? ` · sources: ${data.apiMeta.sources.join(", ")}` : ""}
+        {data.apiMeta?.latencyMs != null ? ` · ${data.apiMeta.latencyMs}ms` : ""}
+      </p>
+    ) : (
+      <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
+        {status === "mock_api_down" && (detail || "Backend unreachable.")}
+        {status === "mock_http_error" &&
+          `${httpStatus != null ? `API error (${httpStatus}). ` : ""}${detail || "Request failed."} Showing offline demo data.`}
+        {status === "mock_empty_query" && "Empty search—showing default demo profile."}
+      </p>
+    );
 
   return (
     <>
@@ -33,26 +48,19 @@ export default async function AnalysisPage({ params }: Props) {
             >
               <span aria-hidden>←</span> Back to dashboard
             </Link>
-            {isFallback && (
-              <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
-                Showing demo profile for <strong className="text-white">{data.ticker}</strong>—add{" "}
-                {ticker.toUpperCase()} to mock data to customize.
-              </p>
-            )}
+            {banner}
           </div>
           <RecommendationCard data={data} />
           <div className="mt-10 grid gap-8 lg:grid-cols-3">
             <div className="space-y-8 lg:col-span-2">
               <FinancialSummaryCards data={data} />
+              <HeadlinesList data={data} />
               <div className="grid gap-6 md:grid-cols-2">
                 <SentimentCard data={data} />
                 <BiasIndicatorCard data={data} />
               </div>
               <TrendsChart data={data} />
-              <div className="grid gap-6 lg:grid-cols-2">
-                <RiskFactorsList data={data} />
-                <HeadlinesList data={data} />
-              </div>
+              <RiskFactorsList data={data} />
             </div>
             <div className="lg:col-span-1">
               <div className="lg:sticky lg:top-20">

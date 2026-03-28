@@ -29,7 +29,7 @@ export function HeroSection() {
             Start an analysis
           </Link>
           <p className="text-sm text-zinc-500">
-            No accounts · Mock data · Built for demo day
+            No accounts · Live API + offline demo · Built for demo day
           </p>
         </div>
       </div>

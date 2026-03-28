@@ -18,8 +18,8 @@ export default function DashboardPage() {
               What are we analyzing?
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-zinc-400">
-              Enter a ticker symbol to open the analysis view. Unknown tickers fall back to a default
-              demo profile so the UI never breaks on stage.
+              Enter a US ticker or a supported company name. The page calls the FastAPI backend when it
+              is running; otherwise you&apos;ll see demo data with a warning banner.
             </p>
           </div>
           <div className="mt-10 max-w-2xl">

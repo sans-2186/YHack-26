@@ -1,0 +1,1 @@
+"""YHack investment agent backend."""

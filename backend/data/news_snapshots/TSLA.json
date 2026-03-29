@@ -1,0 +1,42 @@
+{
+  "ticker": "TSLA",
+  "as_of": "2026-03-28T12:00:00Z",
+  "note": "Demo snapshot emphasizing polarized narrative (growth vs execution risk). Fictionalized for pitch.",
+  "items": [
+    {
+      "title": "Tesla delivery estimates trimmed after Q channel checks, Goldman note says",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/business/autos/demo-tesla-deliveries-2026",
+      "published_at": "2026-03-27T19:10:00Z",
+      "outlet_leaning": "center-market"
+    },
+    {
+      "title": "Energy storage deployments beat internal targets, filing highlights",
+      "source": "TechCrunch",
+      "url": "https://techcrunch.com/demo-tesla-energy-2026",
+      "published_at": "2026-03-27T10:30:00Z",
+      "outlet_leaning": "tech-optimistic"
+    },
+    {
+      "title": "Musk governance headlines resurface debate over key-person risk at Tesla",
+      "source": "Wall Street Journal",
+      "url": "https://www.wsj.com/business/demo-tesla-governance-2026",
+      "published_at": "2026-03-26T21:00:00Z",
+      "outlet_leaning": "center-right-business"
+    },
+    {
+      "title": "EV price war compresses margins; Tesla seen defending share over near-term profit",
+      "source": "Financial Times",
+      "url": "https://www.ft.com/content/demo-tesla-margins-2026",
+      "published_at": "2026-03-26T13:45:00Z",
+      "outlet_leaning": "center-business"
+    },
+    {
+      "title": "Retail traders pile into TSLA options as volatility spikes around headlines",
+      "source": "Bloomberg",
+      "url": "https://www.bloomberg.com/news/demo-tesla-options-2026",
+      "published_at": "2026-03-25T15:20:00Z",
+      "outlet_leaning": "market-neutral"
+    }
+  ]
+}

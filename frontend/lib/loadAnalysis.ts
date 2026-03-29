@@ -20,7 +20,14 @@ export interface LoadAnalysisResult {
 function isAnalyzeResponse(x: unknown): x is AnalyzeResponseJson {
   if (!x || typeof x !== "object") return false;
   const o = x as Record<string, unknown>;
-  return typeof o.analysis_id === "string" && o.company != null && o.news != null;
+  return (
+    typeof o.analysis_id === "string" &&
+    o.company != null &&
+    o.news != null &&
+    o.scores != null &&
+    o.probabilities != null &&
+    o.polymarket_stub != null
+  );
 }
 
 export async function loadAnalysis(query: string): Promise<LoadAnalysisResult> {

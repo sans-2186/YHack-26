@@ -16,6 +16,18 @@ export interface Headline {
   relativeTime: string;
   tone: SentimentTone;
   url?: string;
+  /** Optional tag from curated snapshot (e.g. Ground News–style outlet note). */
+  outletLeaning?: string;
+  eventTags?: string[];
+  politicalRiskTags?: string[];
+}
+
+export interface ComponentScoreView {
+  score: number;
+  label: string;
+  rationale: string;
+  confidencePct: number;
+  quality: "high" | "medium" | "low";
 }
 
 export interface TrendPoint {
@@ -56,4 +68,21 @@ export interface CompanyAnalysis {
   analysisId?: string;
   dataSource?: "live" | "mock";
   apiMeta?: { cached: boolean; latencyMs: number; sources: string[] };
+  scoreBreakdown?: {
+    financial: ComponentScoreView;
+    sentiment: ComponentScoreView;
+    biasRisk: ComponentScoreView;
+    politicalRisk: ComponentScoreView;
+  };
+  verdictProbabilities?: {
+    pInvest: number;
+    pRisky: number;
+    pAvoid: number;
+    method: string;
+  };
+  polymarketStub?: { status: string; message: string };
+  recommendationTrail?: {
+    engine: string;
+    compositeScore?: number | null;
+  };
 }

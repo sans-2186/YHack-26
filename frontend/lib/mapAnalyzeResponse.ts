@@ -1,6 +1,23 @@
-import type { CompanyAnalysis, FinancialMetric, Headline, Recommendation, SentimentTone } from "@/types";
-import type { AnalyzeResponseJson } from "./analyzeTypes";
+import type {
+  CompanyAnalysis,
+  ComponentScoreView,
+  FinancialMetric,
+  Headline,
+  Recommendation,
+  SentimentTone,
+} from "@/types";
+import type { AnalyzeResponseJson, ComponentScoreJson } from "./analyzeTypes";
 import { trendBase } from "./trendFromScore";
+
+function mapComponentScore(j: ComponentScoreJson): ComponentScoreView {
+  return {
+    score: Math.round(j.score_0_100),
+    label: j.label,
+    rationale: j.rationale,
+    confidencePct: Math.round(Math.min(1, Math.max(0, j.confidence)) * 100),
+    quality: j.quality,
+  };
+}
 
 function formatUsdShort(n: number): string {
   const x = Math.abs(n);
@@ -111,7 +128,9 @@ export function mapAnalyzeResponse(json: AnalyzeResponseJson): CompanyAnalysis {
     },
   ];
 
-  const score = Math.round(Math.min(100, Math.max(0, json.news.sentiment.score)));
+  const score = Math.round(
+    Math.min(100, Math.max(0, json.scores?.sentiment?.score_0_100 ?? json.news.sentiment.score)),
+  );
   const caveats = json.recommendation.caveats || [];
   const vsFundamentals =
     caveats[0] ||
@@ -142,7 +161,41 @@ export function mapAnalyzeResponse(json: AnalyzeResponseJson): CompanyAnalysis {
     relativeTime: relativeTime(item.published_at ?? null),
     tone: toneFromTitle(item.title || "", score),
     url: item.url ?? undefined,
+    outletLeaning: item.outlet_leaning?.trim() || undefined,
+    eventTags: item.event_tags?.length ? item.event_tags : undefined,
+    politicalRiskTags: item.political_risk_tags?.length ? item.political_risk_tags : undefined,
   }));
+
+  const scoreBreakdown =
+    json.scores != null
+      ? {
+          financial: mapComponentScore(json.scores.financial),
+          sentiment: mapComponentScore(json.scores.sentiment),
+          biasRisk: mapComponentScore(json.scores.bias_risk),
+          politicalRisk: mapComponentScore(json.scores.political_risk),
+        }
+      : undefined;
+
+  const verdictProbabilities =
+    json.probabilities != null
+      ? {
+          pInvest: json.probabilities.p_invest,
+          pRisky: json.probabilities.p_risky,
+          pAvoid: json.probabilities.p_avoid,
+          method: json.probabilities.method,
+        }
+      : undefined;
+
+  const polymarketStub = json.polymarket_stub
+    ? { status: json.polymarket_stub.status, message: json.polymarket_stub.message }
+    : undefined;
+
+  const recommendationTrail = json.recommendation.trail
+    ? {
+        engine: json.recommendation.trail.engine,
+        compositeScore: json.recommendation.trail.composite_score_0_100 ?? null,
+      }
+    : undefined;
 
   return {
     ticker: json.company.ticker,
@@ -173,5 +226,9 @@ export function mapAnalyzeResponse(json: AnalyzeResponseJson): CompanyAnalysis {
       latencyMs: json.meta.latency_ms,
       sources: json.meta.sources || [],
     },
+    scoreBreakdown,
+    verdictProbabilities,
+    polymarketStub,
+    recommendationTrail,
   };
 }

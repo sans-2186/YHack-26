@@ -14,6 +14,18 @@ export function RecommendationCard({ data }: { data: CompanyAnalysis }) {
             <span className="text-sm text-zinc-400">
               Confidence <span className="font-semibold text-white">{data.confidencePct}%</span>
             </span>
+            {data.recommendationTrail && (
+              <span className="rounded-full border border-white/15 bg-black/30 px-2.5 py-0.5 text-xs text-zinc-400">
+                Engine:{" "}
+                <span className="text-zinc-200">{data.recommendationTrail.engine}</span>
+                {data.recommendationTrail.compositeScore != null && (
+                  <span className="text-zinc-500">
+                    {" "}
+                    · composite {Math.round(data.recommendationTrail.compositeScore)}
+                  </span>
+                )}
+              </span>
+            )}
           </div>
           <h1 className="mt-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
             {data.name}{" "}
@@ -30,6 +42,35 @@ export function RecommendationCard({ data }: { data: CompanyAnalysis }) {
         </div>
       </div>
       <p className="mt-6 text-sm leading-relaxed text-zinc-300">{data.reasoning}</p>
+      {data.verdictProbabilities && (
+        <div className="mt-6 border-t border-white/10 pt-5">
+          <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+            Verdict distribution ({data.verdictProbabilities.method})
+          </p>
+          <div className="mt-3 flex h-3 overflow-hidden rounded-full bg-zinc-800">
+            <div
+              className="bg-emerald-500/90"
+              style={{ width: `${Math.round(data.verdictProbabilities.pInvest * 100)}%` }}
+              title={`Invest ${(data.verdictProbabilities.pInvest * 100).toFixed(0)}%`}
+            />
+            <div
+              className="bg-amber-500/90"
+              style={{ width: `${Math.round(data.verdictProbabilities.pRisky * 100)}%` }}
+              title={`Risky ${(data.verdictProbabilities.pRisky * 100).toFixed(0)}%`}
+            />
+            <div
+              className="bg-rose-500/90"
+              style={{ width: `${Math.round(data.verdictProbabilities.pAvoid * 100)}%` }}
+              title={`Avoid ${(data.verdictProbabilities.pAvoid * 100).toFixed(0)}%`}
+            />
+          </div>
+          <p className="mt-2 text-xs text-zinc-500">
+            Invest {(data.verdictProbabilities.pInvest * 100).toFixed(0)}% · Risky{" "}
+            {(data.verdictProbabilities.pRisky * 100).toFixed(0)}% · Avoid{" "}
+            {(data.verdictProbabilities.pAvoid * 100).toFixed(0)}%
+          </p>
+        </div>
+      )}
     </div>
   );
 }

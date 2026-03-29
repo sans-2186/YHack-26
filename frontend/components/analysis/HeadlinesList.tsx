@@ -14,6 +14,7 @@ const toneLabel: Record<SentimentTone, string> = {
 
 export function HeadlinesList({ data }: { data: CompanyAnalysis }) {
   const live = data.dataSource === "live";
+  const mergedSnapshot = Boolean(data.apiMeta?.sources?.includes("curated_snapshot"));
   return (
     <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-zinc-900/70 to-zinc-950/80 p-6 ring-1 ring-emerald-500/10 sm:p-8">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
@@ -25,7 +26,9 @@ export function HeadlinesList({ data }: { data: CompanyAnalysis }) {
         </div>
         <p className="max-w-md text-sm leading-relaxed text-zinc-400">
           {live
-            ? "Fresh articles pulled for this ticker—this is the pulse judges notice first."
+            ? mergedSnapshot
+              ? "Curated multi-outlet snapshot is merged first, then live API headlines (deduped)—stable story for demos plus real feed."
+              : "Fresh articles pulled for this ticker—this is the pulse judges notice first."
             : "Demo headlines; connect the API to load live articles for any supported company."}
         </p>
       </div>
@@ -50,6 +53,29 @@ export function HeadlinesList({ data }: { data: CompanyAnalysis }) {
               )}
               <p className="mt-2 text-sm text-zinc-500">
                 {h.source} · {h.relativeTime}
+                {h.outletLeaning ? (
+                  <span className="mt-1 block text-xs text-zinc-600">Outlet note: {h.outletLeaning}</span>
+                ) : null}
+                {(h.eventTags?.length || h.politicalRiskTags?.length) ? (
+                  <span className="mt-1 flex flex-wrap gap-1">
+                    {(h.eventTags || []).map((t) => (
+                      <span
+                        key={`e-${t}`}
+                        className="rounded-md bg-zinc-800/80 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-zinc-400"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                    {(h.politicalRiskTags || []).map((t) => (
+                      <span
+                        key={`p-${t}`}
+                        className="rounded-md bg-amber-950/50 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-amber-200/80"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </span>
+                ) : null}
               </p>
             </div>
             <span

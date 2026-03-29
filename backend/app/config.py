@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     http_timeout_seconds: float = 12.0
     cors_origins: str = "http://localhost:3000"
 
+    # Prepend JSON from backend/data/news_snapshots/{TICKER}.json when present
+    news_snapshot_merge: bool = True
+
 
 settings = Settings()
 

@@ -1,4 +1,12 @@
 /** Mirrors `AnalyzeResponse` from the FastAPI app. */
+export interface ComponentScoreJson {
+  score_0_100: number;
+  label: string;
+  rationale: string;
+  confidence: number;
+  quality: "high" | "medium" | "low";
+}
+
 export interface AnalyzeResponseJson {
   analysis_id: string;
   company: {
@@ -23,9 +31,28 @@ export interface AnalyzeResponseJson {
       url?: string | null;
       source?: string | null;
       published_at?: string | null;
+      outlet_leaning?: string | null;
+      event_tags?: string[];
+      political_risk_tags?: string[];
     }>;
     sentiment: { score: number; label: string };
     bias: { label: string; notes?: string | null };
+  };
+  scores: {
+    financial: ComponentScoreJson;
+    sentiment: ComponentScoreJson;
+    bias_risk: ComponentScoreJson;
+    political_risk: ComponentScoreJson;
+  };
+  probabilities: {
+    p_invest: number;
+    p_risky: number;
+    p_avoid: number;
+    method: string;
+  };
+  polymarket_stub: {
+    status: string;
+    message: string;
   };
   recommendation: {
     verdict: string;
@@ -33,6 +60,12 @@ export interface AnalyzeResponseJson {
     reasoning: string[];
     risk_factors: string[];
     caveats: string[];
+    trail?: {
+      engine: string;
+      composite_score_0_100?: number | null;
+      model?: string | null;
+      prompt_version?: string | null;
+    } | null;
   };
   meta: { cached: boolean; latency_ms: number; sources: string[] };
 }

@@ -31,6 +31,7 @@ class NewsItemOut(BaseModel):
     published_at: datetime | None = None
     event_tags: list[str] = Field(default_factory=list)
     political_risk_tags: list[str] = Field(default_factory=list)
+    outlet_leaning: str | None = None
 
 
 class SentimentOut(BaseModel):

@@ -3,7 +3,9 @@ import { BiasIndicatorCard } from "@/components/analysis/BiasIndicatorCard";
 import { ChatPanel } from "@/components/analysis/ChatPanel";
 import { FinancialSummaryCards } from "@/components/analysis/FinancialSummaryCards";
 import { HeadlinesList } from "@/components/analysis/HeadlinesList";
+import { PolymarketStubCard } from "@/components/analysis/PolymarketStubCard";
 import { RecommendationCard } from "@/components/analysis/RecommendationCard";
+import { ScoreBreakdownCard } from "@/components/analysis/ScoreBreakdownCard";
 import { RiskFactorsList } from "@/components/analysis/RiskFactorsList";
 import { SentimentCard } from "@/components/analysis/SentimentCard";
 import { TrendsChart } from "@/components/analysis/TrendsChart";
@@ -51,6 +53,14 @@ export default async function AnalysisPage({ params }: Props) {
             {banner}
           </div>
           <RecommendationCard data={data} />
+          <div className="mt-8 grid gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <ScoreBreakdownCard data={data} />
+            </div>
+            <div className="lg:col-span-1">
+              <PolymarketStubCard data={data} />
+            </div>
+          </div>
           <div className="mt-10 grid gap-8 lg:grid-cols-3">
             <div className="space-y-8 lg:col-span-2">
               <FinancialSummaryCards data={data} />

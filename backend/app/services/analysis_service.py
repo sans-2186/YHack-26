@@ -143,6 +143,11 @@ def _stored_to_response(
             published_at=_dt(i.get("published_at")),
             event_tags=list(i.get("event_tags") or []),
             political_risk_tags=list(i.get("political_risk_tags") or []),
+            outlet_leaning=(
+                str(ol).strip()
+                if (ol := i.get("outlet_leaning")) is not None and str(ol).strip()
+                else None
+            ),
         )
         for i in (n.get("items") or [])
     ]
@@ -275,7 +280,7 @@ async def run_analysis(query: str, force_refresh: bool) -> AnalyzeResponse:
             return _stored_to_response(hit, aid, cached=True, latency_ms=latency_ms)
 
     fin = await finance_client.fetch_financials(cache_key)
-    news_items_raw, news_src = await news_client.fetch_news(cache_key, fin.get("name") or "")
+    news_items_raw, news_tags = await news_client.fetch_news(cache_key, fin.get("name") or "")
     news_items = _enrich_news_with_tags(news_items_raw)
 
     titles = [str(i.get("title") or "") for i in news_items if i.get("title")]
@@ -359,7 +364,7 @@ async def run_analysis(query: str, force_refresh: bool) -> AnalyzeResponse:
 
     fin_src = str(fin.get("source") or "unknown")
     meta = {
-        "sources": [s for s in {fin_src, news_src} if s],
+        "sources": sorted({fin_src, *news_tags}),
         "latency_ms": 0,
     }
 

@@ -1,0 +1,42 @@
+{
+  "ticker": "AAPL",
+  "as_of": "2026-03-28T12:00:00Z",
+  "note": "Demo cross-outlet snapshot for hackathon pitch (fictionalized plausible framing). Replace with a real export when available.",
+  "items": [
+    {
+      "title": "Apple suppliers steady orders ahead of fall product cycle, channel checks show",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/technology/demo-apple-suppliers-2026",
+      "published_at": "2026-03-27T18:20:00Z",
+      "outlet_leaning": "center-market"
+    },
+    {
+      "title": "EU digital rules could force App Store fee changes, legal analysts say",
+      "source": "Financial Times",
+      "url": "https://www.ft.com/content/demo-apple-eu-2026",
+      "published_at": "2026-03-27T14:05:00Z",
+      "outlet_leaning": "center-business"
+    },
+    {
+      "title": "Big Tech faces renewed antitrust pressure as regulators circle App Store policies",
+      "source": "Wall Street Journal",
+      "url": "https://www.wsj.com/tech/demo-apple-antitrust-2026",
+      "published_at": "2026-03-26T22:40:00Z",
+      "outlet_leaning": "center-right-business"
+    },
+    {
+      "title": "Services growth still the hidden engine for Apple’s margin story",
+      "source": "Bloomberg",
+      "url": "https://www.bloomberg.com/news/demo-apple-services-2026",
+      "published_at": "2026-03-26T11:15:00Z",
+      "outlet_leaning": "market-neutral"
+    },
+    {
+      "title": "China demand worries linger for iPhone despite upbeat US channel data",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/demo-apple-china-2026",
+      "published_at": "2026-03-25T16:50:00Z",
+      "outlet_leaning": "market-optimistic"
+    }
+  ]
+}

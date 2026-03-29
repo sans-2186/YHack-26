@@ -1,0 +1,42 @@
+{
+  "ticker": "NVDA",
+  "as_of": "2026-03-28T12:00:00Z",
+  "note": "Demo AI-semiconductor narrative mix (demand vs regulation). Fictionalized for pitch.",
+  "items": [
+    {
+      "title": "Nvidia data-center revenue outlook debated as hyperscalers pace capex",
+      "source": "Reuters",
+      "url": "https://www.reuters.com/technology/demo-nvidia-datacenter-2026",
+      "published_at": "2026-03-27T17:00:00Z",
+      "outlet_leaning": "center-market"
+    },
+    {
+      "title": "Chip export rules remain overhang for Nvidia’s China exposure, analysts warn",
+      "source": "Wall Street Journal",
+      "url": "https://www.wsj.com/tech/demo-nvidia-china-rules-2026",
+      "published_at": "2026-03-27T12:30:00Z",
+      "outlet_leaning": "center-right-business"
+    },
+    {
+      "title": "AI infrastructure build-out still early innings, bulls argue on Nvidia valuation",
+      "source": "CNBC",
+      "url": "https://www.cnbc.com/demo-nvidia-ai-bull-2026",
+      "published_at": "2026-03-26T20:15:00Z",
+      "outlet_leaning": "market-optimistic"
+    },
+    {
+      "title": "Competition in AI accelerators heating up as cloud vendors test custom silicon",
+      "source": "Financial Times",
+      "url": "https://www.ft.com/content/demo-nvidia-competition-2026",
+      "published_at": "2026-03-26T09:00:00Z",
+      "outlet_leaning": "center-business"
+    },
+    {
+      "title": "Supply chain for advanced packaging still tight, industry sources say",
+      "source": "Bloomberg",
+      "url": "https://www.bloomberg.com/news/demo-nvidia-packaging-2026",
+      "published_at": "2026-03-25T14:40:00Z",
+      "outlet_leaning": "market-neutral"
+    }
+  ]
+}

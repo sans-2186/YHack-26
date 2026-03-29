@@ -1,8 +1,7 @@
 @import "tailwindcss";
-
 :root {
   --background: #0a0a0a;
-  --foreground: #fafafa;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -25,7 +24,13 @@ body {
 .animate-in.fade-in.slide-in-from-bottom-4 {
   animation: fade-in-up 0.4s ease both;
 }
-
+body {
+  background: var(--background);
+  color: #ffffff;
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+}
 /* Thin scrollbar */
 .scrollbar-thin::-webkit-scrollbar { width: 4px; }
 .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }

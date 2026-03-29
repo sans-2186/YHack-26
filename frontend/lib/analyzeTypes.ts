@@ -7,6 +7,15 @@ export interface ComponentScoreJson {
   quality: "high" | "medium" | "low";
 }
 
+export interface PolymarketMarketJson {
+  question: string;
+  yes_probability?: number | null;
+  volume_usd?: number | null;
+  end_date?: string | null;
+  market_url?: string | null;
+  id?: string | null;
+}
+
 export interface AnalyzeResponseJson {
   analysis_id: string;
   company: {
@@ -53,6 +62,7 @@ export interface AnalyzeResponseJson {
   polymarket_stub: {
     status: string;
     message: string;
+    markets?: PolymarketMarketJson[];
   };
   recommendation: {
     verdict: string;

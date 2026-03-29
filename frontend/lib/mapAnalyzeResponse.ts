@@ -187,7 +187,18 @@ export function mapAnalyzeResponse(json: AnalyzeResponseJson): CompanyAnalysis {
       : undefined;
 
   const polymarketStub = json.polymarket_stub
-    ? { status: json.polymarket_stub.status, message: json.polymarket_stub.message }
+    ? {
+        status: json.polymarket_stub.status,
+        message: json.polymarket_stub.message,
+        markets: (json.polymarket_stub.markets ?? []).map((mk) => ({
+          question: mk.question,
+          yes_probability: mk.yes_probability ?? null,
+          volume_usd: mk.volume_usd ?? null,
+          end_date: mk.end_date ?? null,
+          market_url: mk.market_url ?? null,
+          id: mk.id ?? null,
+        })),
+      }
     : undefined;
 
   const recommendationTrail = json.recommendation.trail

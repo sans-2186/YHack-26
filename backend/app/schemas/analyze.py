@@ -51,8 +51,6 @@ class NewsBundleOut(BaseModel):
 
 
 class ComponentScoreOut(BaseModel):
-    """Single pillar score (0 = worst, 100 = best for financial/sentiment; risk scores are 'higher = riskier')."""
-
     score_0_100: float = Field(ge=0, le=100)
     label: str
     rationale: str
@@ -68,19 +66,36 @@ class ScoresOut(BaseModel):
 
 
 class ProbabilityEstimatesOut(BaseModel):
-    """Deterministic mass over verdict buckets derived from composite score (see `method`)."""
-
     p_invest: float = Field(ge=0, le=1)
     p_risky: float = Field(ge=0, le=1)
     p_avoid: float = Field(ge=0, le=1)
     method: str = "composite_softmax"
 
 
-class PolymarketStubOut(BaseModel):
-    """Placeholder until Phase 2 compares against prediction markets."""
+# ── NEW: Real Polymarket market item ─────────────────────────────────────────
 
-    status: Literal["not_integrated"] = "not_integrated"
-    message: str = "Polymarket comparison is not wired in Phase 1."
+class PolymarketMarketOut(BaseModel):
+    """A single Polymarket prediction market."""
+    question: str
+    yes_probability: float | None = None   # 0.0 – 1.0
+    volume_usd: float | None = None
+    end_date: str | None = None
+    market_url: str | None = None
+    id: str | None = None
+
+
+class PolymarketOut(BaseModel):
+    """
+    Replaces the old PolymarketStubOut.
+    status: "live" | "no_markets_found" | "error" | "not_integrated"
+    """
+    status: str = "not_integrated"
+    message: str = "Polymarket comparison is not wired."
+    markets: list[PolymarketMarketOut] = Field(default_factory=list)
+
+
+# Keep old name as alias so existing imports don't break
+PolymarketStubOut = PolymarketOut
 
 
 class RecommendationTrailOut(BaseModel):
@@ -91,7 +106,7 @@ class RecommendationTrailOut(BaseModel):
 
 
 class RecommendationOut(BaseModel):
-    verdict: str  # invest | risky | avoid
+    verdict: str
     confidence: float
     reasoning: list[str]
     risk_factors: list[str]
@@ -117,6 +132,6 @@ class AnalyzeResponse(BaseModel):
     news: NewsBundleOut
     scores: ScoresOut
     probabilities: ProbabilityEstimatesOut
-    polymarket_stub: PolymarketStubOut
+    polymarket_stub: PolymarketOut          # field name unchanged for frontend compat
     recommendation: RecommendationOut
     meta: AnalyzeMeta

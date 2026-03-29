@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Any
 
 from app.config import settings
+from app.services.polymarket_client import fetch_related_markets
 from app.db import repositories as repo
 from app.db.mongo import get_db
 from app.schemas.analyze import (
@@ -17,6 +18,7 @@ from app.schemas.analyze import (
     NewsBundleOut,
     NewsItemOut,
     PolymarketStubOut,
+    PolymarketMarketOut,
     ProbabilityEstimatesOut,
     RecommendationOut,
     RecommendationTrailOut,
@@ -180,9 +182,23 @@ def _stored_to_response(
         probabilities = _default_probabilities()
 
     poly = stored.get("polymarket_stub") or {}
+    raw_markets = poly.get("markets") or []
+    poly_markets = [
+        PolymarketMarketOut(
+            question=mk.get("question", ""),
+            yes_probability=mk.get("yes_probability"),
+            volume_usd=mk.get("volume_usd"),
+            end_date=mk.get("end_date"),
+            market_url=mk.get("market_url"),
+            id=mk.get("id"),
+        )
+        for mk in raw_markets
+        if mk.get("question")
+    ]
     polymarket_stub = PolymarketStubOut(
-        status="not_integrated",
-        message=str(poly.get("message") or "Polymarket comparison is not wired in Phase 1."),
+        status=str(poly.get("status") or "not_integrated"),
+        message=str(poly.get("message") or ""),
+        markets=poly_markets,
     )
 
     trail_raw = r.get("trail")
@@ -380,10 +396,20 @@ async def run_analysis(query: str, force_refresh: bool) -> AnalyzeResponse:
         "p_avoid": p_avoid,
         "method": "composite_softmax",
     }
-    polymarket_stub_stored = {
-        "status": "not_integrated",
-        "message": "Polymarket comparison is not wired in Phase 1.",
-    }
+
+    try:
+        poly_data = await fetch_related_markets(
+            ticker=cache_key,
+            sector=fin.get("sector"),
+            max_results=3,
+        )
+    except Exception:
+        poly_data = {
+            "status": "error",
+            "message": "Polymarket fetch failed; showing Signal analysis only.",
+            "markets": [],
+        }
+    polymarket_stub_stored = poly_data
 
     stored = repo.build_analysis_document(
         cache_key=cache_key,
